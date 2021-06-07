@@ -9,6 +9,11 @@ function App() {
 
     const [user, loading, error] = useAuthState(auth);
 
+    if (error) {
+        console.log(error);
+        alert("Oops something went wrong !");
+    }
+
     return (
         <ChakraWrap>
             <Container maxW="container.xl" mt={10}>
