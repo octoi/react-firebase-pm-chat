@@ -1,10 +1,12 @@
 import React from 'react';
 import ChakraWrap from './wrappers/ChakraWrap';
+import { Container } from '@chakra-ui/react';
 
 function App() {
     return (
         <ChakraWrap>
-            <h2>Hello World</h2>
+            <Container maxW="container.xl" mt={10}>
+            </Container>
         </ChakraWrap>
     );
 }
