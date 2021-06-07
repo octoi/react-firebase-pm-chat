@@ -1,8 +1,11 @@
+import React from 'react';
+import ChakraWrap from './wrappers/ChakraWrap';
+
 function App() {
     return (
-        <div className="App">
+        <ChakraWrap>
             <h2>Hello World</h2>
-        </div>
+        </ChakraWrap>
     );
 }
 
