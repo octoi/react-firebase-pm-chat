@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Avatar, Text, Divider } from '@chakra-ui/react';
 
-export default function ChatProfiles() {
+export default function ChatProfiles({ setCurrentChat }) {
     return (
         <div>
             <ChatProfileCard />
