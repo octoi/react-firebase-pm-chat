@@ -1,10 +1,21 @@
 import React from 'react'
-import { auth, provider } from '../firebase/firebase';
+import { auth, provider, firestore } from '../firebase/firebase';
 import { Button, Center, Spinner } from '@chakra-ui/react';
 
 export default function Login({ loading }) {
     const signInWithGoogle = () => {
-        auth.signInWithPopup(provider)
+        const userRef = firestore.collection("users");
+
+        auth.signInWithPopup(provider).then(async userData => {
+            const user = {
+                name: userData.user.displayName,
+                email: userData.user.email,
+                profile: userData.user.photoURL,
+            }
+
+            const query = await userRef.where('email', '==', user.email).get();
+            if (query.docs.length === 0) await userRef.add({ ...user });
+        })
     }
 
     return (
