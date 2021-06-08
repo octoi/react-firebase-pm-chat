@@ -10,7 +10,7 @@ export default function ChatProfiles({ setCurrentChat }) {
 
     return (
         <div style={{ marginTop: "50px" }}>
-            {users && users.map(user => <ChatProfileCard onClick={() => setCurrentChat(user.id)} user={user} key={user?.id} />)}
+            {users && users.map(user => <ChatProfileCard onClick={() => setCurrentChat(user)} user={user} key={user?.id} />)}
         </div>
     )
 }
