@@ -5,5 +5,5 @@ import PmChat from './PmChat';
 export default function Chat() {
     const [currentChat, setCurrentChat] = useState();
 
-    return currentChat ? <PmChat /> : <ChatProfiles setCurrentChat={setCurrentChat} />
+    return currentChat ? <PmChat currentChat={currentChat} /> : <ChatProfiles setCurrentChat={setCurrentChat} />
 }

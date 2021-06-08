@@ -1,6 +1,6 @@
 import React from 'react';
 import { Flex, Avatar, Text, Divider } from '@chakra-ui/react';
-import { firestore } from '../firebase/firebase';
+import { firestore, auth } from '../firebase/firebase';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 export default function ChatProfiles({ setCurrentChat }) {
@@ -10,13 +10,22 @@ export default function ChatProfiles({ setCurrentChat }) {
 
     return (
         <div style={{ marginTop: "50px" }}>
-            {users && users.map(user => <ChatProfileCard onClick={() => setCurrentChat(user.id)} user={user} key={user?.id} />)}
+            {users && users.map(user => <ChatProfileCard onClick={() => setCurrentChat(user)} user={user} key={user?.id} />)}
         </div>
     )
 }
 
 
 function ChatProfileCard({ user, onClick }) {
+
+    const currentUser = {
+        name: auth?.currentUser.displayName,
+        email: auth?.currentUser.email,
+        profile: auth?.currentUser.photoURL,
+    }
+
+    if (currentUser.email === user?.email) return null;
+
     return (
         <div>
             <Flex onClick={onClick} cursor="pointer" alignItems="center" mb={5} mt={5}>
@@ -29,4 +38,5 @@ function ChatProfileCard({ user, onClick }) {
             <Divider />
         </div>
     );
+
 }
