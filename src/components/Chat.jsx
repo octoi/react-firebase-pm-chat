@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
+import ChatProfiles from './ChatProfiles';
+import PmChat from './PmChat';
 
 export default function Chat() {
-    return (
-        <div>
+    const [currentChat, setCurrentChat] = useState();
 
-        </div>
-    )
+    return currentChat ? <PmChat /> : <ChatProfiles setCurrentChat={setCurrentChat} />
 }
