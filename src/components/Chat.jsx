@@ -1,9 +1,24 @@
-import React from 'react';
+import { Flex, Avatar, Text, Divider } from '@chakra-ui/react';
 
 export default function Chat() {
     return (
-        <div>
-
-        </div>
+        <Flex direction="column" marginTop="20px">
+            <ChatProfileCard />
+        </Flex>
     )
+}
+
+function ChatProfileCard() {
+    return (
+        <div>
+            <Flex alignItems="center" mb={5} mt={5}>
+                <Avatar src="https://bit.ly/ryan-florence" size="lg" />
+                <Flex direction="column" ml={3}>
+                    <Text fontSize="lg" fontWeight="semibold">Username</Text>
+                    <Text fontSize="md">user@email.com</Text>
+                </Flex>
+            </Flex>
+            <Divider />
+        </div>
+    );
 }
