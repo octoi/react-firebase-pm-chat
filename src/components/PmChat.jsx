@@ -5,7 +5,7 @@ export default function PmChat() {
     const [formValue, setFormValue] = useState('');
 
     return (
-        <Flex mt={10} direction="column" justifyContent="space-between" marginTop="20px">
+        <Flex direction="column" justifyContent="space-between" marginTop="50px">
             <form style={{ display: "flex" }}>
                 <Input
                     variant="filled"
