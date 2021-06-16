@@ -22,17 +22,16 @@ export default function PmChat({ currentChat }) {
         const getChatRoom = async () => {
             const query = await messageRef.where('users', '==', users).get();
 
-            if (query.docs.length === 0) await messageRef.add({
-                users,
-                messages: []
-            }).then(res => {
-                res.get().then(doc => setChatRoom(doc.data()))
-            });
+            if (query.docs.length === 0)
+                await messageRef.add({ users, messages: [] })
+                    .then(res => res.get()
+                        .then(doc => setChatRoom({ ...doc.data(), id: doc.id })));
 
-            query.docs.map(doc => setChatRoom(doc.data()));
+            query.docs.map(doc => setChatRoom({ ...doc.data(), id: doc.id }));
         }
         getChatRoom();
     }, []);
+
 
     return (
         <div>
