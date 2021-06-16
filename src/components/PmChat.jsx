@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { auth, firestore } from '../firebase/firebase';
-import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { Input, Flex, Button } from '@chakra-ui/react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
 
@@ -14,19 +13,24 @@ export default function PmChat({ currentChat }) {
         profile: auth?.currentUser.photoURL,
     }
 
+
     useEffect(() => {
+        let users = [user.email, currentChat?.email];
+        users.sort();
         const getChatRoom = async () => {
-            const query = await messageRef
-                .where('user1', 'in', [currentChat.email, user.email])
-                .where('user2', 'not-in', [currentChat.email, user.email])
-                .get();
+            const query = await messageRef.where('users', '==', users).get();
+
             if (query.docs.length === 0) await messageRef.add({
-                user1: user.email,
-                user2: currentChat?.email,
+                users,
                 messages: []
             }).then(data => {
                 console.log(data);
             });
+            else {
+                query.docs.map(doc => {
+                    setChatRoom(doc.data())
+                });
+            }
         }
         getChatRoom();
     }, []);
@@ -62,4 +66,3 @@ const ChatForm = () => {
         </form>
     );
 }
-
