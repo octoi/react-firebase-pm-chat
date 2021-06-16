@@ -22,20 +22,37 @@ export default function PmChat({ currentChat }) {
         const getChatRoom = async () => {
             const query = await messageRef.where('users', '==', users).get();
 
+
             if (query.docs.length === 0)
                 await messageRef.add({ users, messages: [] })
                     .then(res => res.get()
-                        .then(doc => setChatRoom({ ...doc.data(), id: doc.id })));
+                        .then(doc => {
+                            setChatRoom({ ...doc.data(), id: doc.id })
+                            firestoreListener(doc.id)
+                        }));
 
-            query.docs.map(doc => setChatRoom({ ...doc.data(), id: doc.id }));
+            query.docs.map(doc => {
+                setChatRoom({ ...doc.data(), id: doc.id })
+                firestoreListener(doc.id)
+            });
+
         }
         getChatRoom();
     }, []);
+
+    const firestoreListener = (id) => {
+        const document = messageRef.doc(id);
+        document.onSnapshot(doc => {
+            setChatRoom({ ...doc.data(), id: doc.id })
+        })
+    }
+
 
     const sendMessage = (message) => {
         let payload = { message, user }
         messageRef.doc(chatRoom?.id).update({ messages: [...chatRoom.messages, payload] })
     }
+
 
 
     return (
