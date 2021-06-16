@@ -32,6 +32,11 @@ export default function PmChat({ currentChat }) {
         getChatRoom();
     }, []);
 
+    const sendMessage = (message) => {
+        // send message
+        alert(message);
+    }
+
 
     return (
         <div>
@@ -41,17 +46,23 @@ export default function PmChat({ currentChat }) {
             </Breadcrumb>
             <Flex direction="column" justifyContent="space-between" marginTop="50px">
                 <Messages dummy={dummy} messages={chatRoom?.messages} user={user} />
-                <ChatForm />
+                <ChatForm sendMessage={sendMessage} />
             </Flex>
         </div>
     )
 }
 
-const ChatForm = () => {
+const ChatForm = ({ sendMessage }) => {
     const [formValue, setFormValue] = useState('');
 
+    const submitForm = (e) => {
+        e.preventDefault();
+        sendMessage(formValue);
+        setFormValue("");
+    }
+
     return (
-        <form style={{ display: "flex", marginBottom: "20px" }}>
+        <form style={{ display: "flex", marginBottom: "20px" }} onSubmit={submitForm}>
             <Input
                 variant="filled"
                 placeholder="say something nice"
