@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { auth, firestore } from '../firebase/firebase';
-import { Input, Flex, Button, Avatar } from '@chakra-ui/react';
+import { Input, Flex, Button } from '@chakra-ui/react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react"
 
 export default function PmChat({ currentChat }) {
     const messageRef = firestore.collection('chats');
     const [chatRoom, setChatRoom] = useState();
+    const dummy = useRef();
 
     const user = {
         name: auth?.currentUser.displayName,
@@ -33,8 +34,6 @@ export default function PmChat({ currentChat }) {
         getChatRoom();
     }, []);
 
-
-
     return (
         <div>
             <Breadcrumb>
@@ -42,6 +41,7 @@ export default function PmChat({ currentChat }) {
                 <BreadcrumbItem><BreadcrumbLink href="#">{currentChat.name}</BreadcrumbLink></BreadcrumbItem>
             </Breadcrumb>
             <Flex direction="column" justifyContent="space-between" marginTop="50px">
+                <Messages dummy={dummy} messages={chatRoom?.messages} user={user} />
                 <ChatForm />
             </Flex>
         </div>
@@ -52,7 +52,7 @@ const ChatForm = () => {
     const [formValue, setFormValue] = useState('');
 
     return (
-        <form style={{ display: "flex" }}>
+        <form style={{ display: "flex", marginBottom: "20px" }}>
             <Input
                 variant="filled"
                 placeholder="say something nice"
@@ -65,3 +65,35 @@ const ChatForm = () => {
     );
 }
 
+function Messages({ messages, user, dummy }) {
+    useEffect(() => {
+        dummy.current.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, dummy])
+
+    return (
+        <div style={{ height: "75vh", overflowX: "hidden", margin: "20px 0px" }}>
+            {messages && messages.map((message, id) => <ChatMessage user={user} chat={message} key={id} />)}
+            <span ref={dummy}></span>
+        </div>
+    );
+}
+
+function ChatMessage({ chat, user }) {
+
+    const isMyMessage = user.email === chat.user.email
+
+    return (
+        <Flex alignItems="center" flexDirection={isMyMessage ? "row-reverse" : "row"} marginTop="15px">
+            <div style={{
+                margin: "0px 10px",
+                background: isMyMessage ? '#3bbdb6' : "var(--chakra-colors-whiteAlpha-200)",
+                padding: "15px 10px",
+                borderRadius: "10px",
+                textAlign: "right",
+                width: "fit-content"
+            }}>
+                {chat.message}
+            </div>
+        </Flex>
+    );
+}
