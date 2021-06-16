@@ -33,8 +33,8 @@ export default function PmChat({ currentChat }) {
     }, []);
 
     const sendMessage = (message) => {
-        // send message
-        alert(message);
+        let payload = { message, user }
+        messageRef.doc(chatRoom?.id).update({ messages: [...chatRoom.messages, payload] })
     }
 
 
